@@ -22,16 +22,30 @@ app.use(express.json());
 // Serve up static assets
 app.use('/images', express.static(path.join(__dirname, '../client/images')));
 
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/build')));
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  //
+  app.get('*', (req, res) => {
+    res.sendfile(path.join((__dirname = 'client/build/index.html')));
+  });
 }
-
-const root = require('path').join(__dirname, 'client', 'build');
-app.use(express.static(root));
-
+//build mode
 app.get('*', (req, res) => {
-  res.sendFile('index.html', { root });
+  res.sendFile(path.join(__dirname + '/client/public/index.html'));
 });
+
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.join(__dirname, '../client/build')));
+// }
+
+// const root = require('path').join(__dirname, 'client', 'build');
+// app.use(express.static(root));
+
+// app.get('*', (req, res) => {
+//   res.sendFile('index.html', { root });
+// });
 
 db.once('open', () => {
   app.listen(PORT, () => {
