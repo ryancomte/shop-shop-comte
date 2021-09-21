@@ -1,8 +1,13 @@
 {
-  "name": "mern-server",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "proxy": "8000",
+  "engines": {
+    "node": "16.6.1",
+    "npm": "6.14.13"
+  },
   "scripts": {
     "start": "node server.js",
     "watch": "nodemon",
