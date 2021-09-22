@@ -19,33 +19,19 @@ server.applyMiddleware({ app });
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+require('dotenv').config();
+
 // Serve up static assets
 app.use('/images', express.static(path.join(__dirname, '../client/images')));
 
-app.use(express.static(path.join(__dirname, 'client/build')));
+// ... other app.use middleware
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client/build')));
-  //
-  app.get('*', (req, res) => {
-    res.sendfile(path.join((__dirname = 'client/build/index.html')));
-  });
-}
-//build mode
+// ...
+// Right before your app.listen(), add this:
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/public/index.html'));
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
-
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static(path.join(__dirname, '../client/build')));
-// }
-
-// const root = require('path').join(__dirname, 'client', 'build');
-// app.use(express.static(root));
-
-// app.get('*', (req, res) => {
-//   res.sendFile('index.html', { root });
-// });
 
 db.once('open', () => {
   app.listen(PORT, () => {
